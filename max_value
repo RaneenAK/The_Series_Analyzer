@@ -1,0 +1,19 @@
+#!/bin/bash
+
+
+function max_value() {
+# Initialize max to the first argument
+local max=$1
+
+# Loop through the remaining arguments
+for num in "${@:2}" ; do
+    # If the current number is greater than max, update max
+    if [ $num -gt $max ]; then
+        max=$num
+    fi
+done
+
+# Output the max value
+echo $max
+}
+max_value

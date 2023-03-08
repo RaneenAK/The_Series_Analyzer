@@ -1,0 +1,19 @@
+#!/bin/bash
+
+
+function min_value() {
+# Initialize max to the first argument
+local min=$1
+
+# Loop through the remaining arguments
+for num in "${@:2}" ; do
+    # If the current number is less than min, update min
+    if [ $num -lt $min ]; then
+        min=$num
+    fi
+done
+
+# Output the max value
+echo $min
+}
+min_value 
