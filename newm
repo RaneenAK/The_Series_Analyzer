@@ -1,0 +1,22 @@
+#!/bin/bash
+#-------------------------------------------------------------a---------------------------
+# Read input array from user
+echo "Enter array elements (separated by space): "
+read -a my_array
+#------------------------------------------------------------b----------------------------
+# Print array elements
+echo "Array elements:"
+for element in "${my_array[@]}"
+do
+    echo "$element"
+done
+#-----------------------------------------------------------c-------------------------------
+# Sort array
+sorted_array=($(echo "${my_array[*]}" | tr ' ' '\n' | sort -n))
+
+# Print sorted array
+echo "Sorted array:"
+for element in "${sorted_array[@]}"
+do
+    echo "$element"
+done
