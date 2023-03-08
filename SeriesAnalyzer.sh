@@ -1,32 +1,116 @@
 #! /bin/bash
 
-# a. Input a Series. (Replace the current series)
-# b. Display the series in the order it was entered.
-# c. Display the series in sorted order (from low to
-# high).
-# d. Display the Max value of the series.
-# e. Display the Min value of the series.
-# f. Display the Average of the series.
-# g. Display the Number of elements in the series.
-# h. Display the Sum of the series.
-# i. Exit.
+New_Series(){
+echo "please enter a new series: " 
+read -a my_array
+echo "${my_array[@]}"
+return "${my_array[@]}"
+}
+
+In_the_same_order(){
+for element in "${args[@]}"
+do
+    echo -n "$element " 
+done
+
+}
+In_the_same_order $args
+
+From_low_to_high(){
+    i=0
+    while [[ i -lt ${#args[*]} ]]
+    do
+        j=0
+        let sorting=${#args[*]}-$i-1
+        while [[ j -lt $sorting ]]
+        do
+            if [ ${args[j]} -gt ${args[$((j+1))]} ]
+            then
+            temp=${args[j]}
+            args[$j]=${args[$((j+1))]}
+            args[$((j+1))]=$temp
+            fi
+            let j=$j+1
+        done
+        let i=$i+1
+    done
+    echo ${args[*]}
+}   
+From_low_to_high $args
+
+function max_value() {
+    max=${args[0]}
+    for num in "${args[@]}"; do
+        if (( num > max )); then
+            max=$num
+        fi
+    done
+    echo $max
+}
+max_value $args
+
+
+function min_value() {
+    min=${args[0]}
+    for num in "${args[@]}"; do
+        if (( num < min )); then
+            min=$num
+        fi
+    done
+    echo $min
+}
+min_value $args
+
+function Sum(){
+sum=0
+for i in ${args[@]}; do
+  let sum+=$i
+done
+echo "$sum"
+#return $sum
+} 
+Sum
+
+function Average(){
+  num_values=${#args[@]}
+  local total=$sum
+  let avr=$total/$num_values
+    echo "$avr"
+}
+
+function Number_of_elements(){
+    echo ${#args[@]}
+}
+Number_of_elements $args
+
+#____________________________________________________________________
 
 
 args=("$@")
-numbers_to_check=${#args}
-if [[ $numbers_to_check -ge 3 || $args =~ [a-z] && $args =~ [A-Z] ]]
+numbers_to_check=${#args[@]}
+if [[ $numbers_to_check -le 3 && $args =~ [a-z] && $args =~ [A-Z] 
+|| $args =~ [a-z] || $args =~ [A-Z] ]]
 then
-    echo "you have entered invalid input .. please try again"
+    echo $#
+    echo "error"
+
+else
+  for i in "${args[@]}"
+    do
+        echo -n "$i"" "
+    done
+    echo
 fi
 
 
 echo "Please select your desired option"
 options=("New Series" "In the same order" "From low to high" "Max Value" "Min Value" "Average" "Number of elements" "Sum" "Exit")
+COLUMNS=1
 select i in "${options[@]}" ; do
 case $i in
-"New Series") ;;
-"In the same order") ;;
-"From low to high") ;; 
+"New Series") New_Series ;;
+"In the same order") In_the_same_order ;;
+"From low to high") From_low_to_high ;; 
 "Max Value") max_value ;;
 "Min Value") min_value ;;
 "Average") Average ;;
@@ -37,52 +121,3 @@ case $i in
 esac
 done 
 
-function max_value() {
-# Initialize max to the first argument
-local max=$1
-
-# Loop through the remaining arguments
-for num in "${@:2}" ; do
-    # If the current number is greater than max, update max
-    if [ $num -gt $max ]; then
-        max=$num
-    fi
-done
-
-# Output the max value
-echo $max
-}
-
-function min_value() {
-# Initialize max to the first argument
-local min=$1
-
-# Loop through the remaining arguments
-for num in "${@:2}" ; do
-    # If the current number is less than min, update min
-    if [ $num -lt $min ]; then
-        min=$num
-    fi
-done
-
-# Output the max value
-echo $min
-}
-
-
-Average(){
-  let avr=Sum/$#
-    echo "$avr"
-}
-Number_of_elements(){
-    echo $#
-}
-
-Sum(){
-sum=0
-for i in ${array[@]}; do
-  let sum+=$i
-done
-echo "$sum"
-return $sum
-}
